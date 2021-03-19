@@ -1,0 +1,42 @@
+body{
+    background: #000;
+    text-align: center;
+}
+
+h1{
+    color: white;
+}
+
+table {
+    margin: 8vh auto;
+    border-collapse: collapse;
+    height: 45%;
+}
+
+td{
+    border: 5px solid grey;
+}
+
+#resultId{
+    text-align: center;
+    font-size: 3em;
+    color: red;
+    font-weight: 700;
+    margin-top: 5vw;
+}
+
+button{
+    margin: auto;
+    margin-top: 3vw;
+    padding: 10px 30px;
+    font-size: 20px;
+    color: greenyellow;
+    font-weight: 700;
+    background-color: green;
+    display: none;
+    border-radius: 15%;
+}
+
+button:hover {
+    background: rgba(0, 255, 0, 0.4);
+}

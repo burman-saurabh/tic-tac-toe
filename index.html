@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div id="resultId"></div>
+    <button id='replayId' onclick="window.location.reload()">Replay</button>
+
+    <script>
+        let currentPlayer = 1; // odd for circle cell
+        let table = document.createElement('table');
+
+        for (i = 0; i < 3; i++) {
+            let row = table.insertRow(i);
+            for (j = 0; j < 3; j++) {
+                let cell = row.insertCell(j);
+                cell.innerHTML = "<img src = './media/cell.png'>";
+                cell.setAttribute('id', i + '' + j);
+
+                cell.addEventListener('click', eventListFun);
+
+                // cell.addEventListener('click', updateCell);
+
+
+            }
+        }
+
+        function eventListFun() {
+            updateCell(this);
+        }
+
+        document.body.insertBefore(table, document.getElementById('resultId'));
+
+        function updateCell(elem) {
+            console.log(elem);
+
+            if (currentPlayer % 2 != 0) {
+                // console.log(elem.childNodes[0].src);          
+                elem.childNodes[0].src = './media/circleCell.png';
+            } else {
+                elem.childNodes[0].src = './media/crossCell.png';
+            }
+
+            elem.removeEventListener('click', eventListFun);
+
+            let matched = checkGameStatus();
+            console.log(matched);
+
+            if (matched) {
+                console.log(currentPlayer);
+                document.getElementById('resultId').innerHTML = 'Player with ' + (currentPlayer % 2 == 0 ? 'X' : 'O') +
+                    ' wins';
+                document.getElementById('replayId').style.display = 'block';
+
+                for (i = 0; i < table.rows.length; i++) {
+                    for (j = 0; j < table.rows[i].cells.length; j++) {
+                        table.rows[i].cells[j].removeEventListener('click', eventListFun);
+                    }
+                }
+
+            } else if (currentPlayer == 9) {
+                document.getElementById('resultId').innerHTML = 'Match Draw !!!';
+                document.getElementById('replayId').style.display = 'block';
+            } else {
+                currentPlayer++;
+            }
+
+        }
+
+        function checkGameStatus() {
+            // debugger;
+            // document.getElementsByTagName('table')[0].rows[0].cells[0];
+            let table = document.getElementsByTagName('table')[0];
+            let cellsMatched = false;
+
+            for (k = 0; k < 3; k++) {
+                let matched = true;
+                let rowFirstCellValue = table.rows[k].cells[0].childNodes[0].src;
+
+                if (rowFirstCellValue.indexOf('cell.png') > -1) {
+                    continue;
+                }
+
+                for (j = 0; j < table.rows[k].cells.length; j++) {
+                    if (table.rows[k].cells[j].childNodes[0].src != rowFirstCellValue) {
+                        matched = false;
+                    }
+                }
+
+                if (matched == true) {
+                    cellsMatched = true;
+                    break;
+                }
+            }
+
+            for (k = 0; k < 3; k++) {
+                let matched = true;
+                let cellFirstCellValue = table.rows[0].cells[k].childNodes[0].src;
+
+                if (cellFirstCellValue.indexOf('cell.png') > -1) {
+                    continue;
+                }
+
+                for (j = 0; j < table.rows.length; j++) {
+                    if (table.rows[j].cells[k].childNodes[0].src != cellFirstCellValue) {
+                        matched = false;
+                    }
+                }
+
+                if (matched == true) {
+                    cellsMatched = true;
+                    break;
+                }
+            }
+
+            let diag1CellValue = table.rows[0].cells[0].childNodes[0].src;
+            let diagMatch = true;
+            if (diag1CellValue.indexOf('cell.png') > -1) {
+                diagMatch = false;
+            } else {
+                for (i = 0; i < 3; i++) {
+                    for (j = 0; j < 3; j++) {
+                        if (i == j) {
+                            if (table.rows[i].cells[j].childNodes[0].src != diag1CellValue) {
+                                diagMatch = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (diagMatch) {
+                cellsMatched = true;
+            }
+
+
+
+            let diag2CellValue = table.rows[2].cells[0].childNodes[0].src;
+            let diag2Match = true;
+            if (diag2CellValue.indexOf('cell.png') > -1) {
+                diag2Match = false;
+            } else {
+                for (i = 0; i < 3; i++) {
+                    for (j = 0; j < 3; j++) {
+                        if (i == (2 - j)) {
+                            if (table.rows[i].cells[j].childNodes[0].src != diag2CellValue) {
+                                diag2Match = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (diag2Match) {
+                cellsMatched = true;
+            }
+
+
+            return cellsMatched;
+
+        }
+    </script>
+
+</body>
+
+</html>
